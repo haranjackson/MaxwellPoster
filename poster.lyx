@@ -39,6 +39,13 @@
 \setbeamercolor{block title}{bg=lighterblue,fg=vdarkblue}
 \setbeamercolor{lower separation line head}{bg=darkblue}
 
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamercolor{bibliography item}{fg=black}
+\setbeamercolor*{bibliography entry title}{fg=black}
+\setbeamercolor*{bibliography entry author}{fg=black}
+\setbeamercolor*{bibliography entry location}{fg=black}
+\setbeamercolor*{bibliography entry note}{fg=black}
+
 \newif\ifThreeCols
 \ifnum \nCols=2
 \newcommand{\colWidth}{.45\paperwidth}
