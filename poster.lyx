@@ -11,6 +11,7 @@
 \newcommand{\posterSize}{a2} % a0,a1,a2
 \newcommand{\nCols}{2} % 2,3
 
+
 \usetheme{Madrid}
 \usepackage[orientation=portrait,size=\posterSize]{beamerposter}
 \usepackage[labelfont={scriptsize,color={darkblue}},font=scriptsize,labelformat=simple]{caption}
@@ -39,13 +40,25 @@
 \setbeamercolor{block title}{bg=lighterblue,fg=vdarkblue}
 \setbeamercolor{lower separation line head}{bg=darkblue}
 
-\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamertemplate{bibliography item}{\insertbiblabel}  % Numbered bibliography
+
+%%% Each bibliography entry runs on just 1 line %%%
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+
 \setbeamercolor{bibliography item}{fg=black}
 \setbeamercolor*{bibliography entry title}{fg=black}
 \setbeamercolor*{bibliography entry author}{fg=black}
 \setbeamercolor*{bibliography entry location}{fg=black}
 \setbeamercolor*{bibliography entry note}{fg=black}
 
+%%% Equation labels resize according to equation size %%%
+\makeatletter
+\def\maketag@@@#1{\hbox{\m@th#1}}
+\makeatother
+
+%%% Set column width according to number of columns %%%
 \newif\ifThreeCols
 \ifnum \nCols=2
 \newcommand{\colWidth}{.45\paperwidth}
@@ -56,13 +69,25 @@
 \fi
 
 
-\newenvironment{formattedcolumn}
+\newenvironment{fcolumn}
 {
   \begin{column}[t]{\colWidth}
-  \setlength{\parskip}{.005\paperheight}
 }
 {
   \end{column}
+}
+
+
+\newenvironment{fblock}[1]
+{
+  \begin{block}{#1}
+    \centering
+    \begin{minipage}{0.95\linewidth}
+    \setlength{\parskip}{.005\paperheight}
+}
+{      
+    \end{minipage}
+  \end{block}
 }
 
 
@@ -113,7 +138,7 @@
 \setbeamertemplate{block end}
 {
   \end{beamercolorbox}
-  \vspace{.01\paperheight}
+  \vspace{.01\paperwidth}
 }
 
 
@@ -129,7 +154,7 @@
     \end{beamercolorbox}%
     
     \begin{beamercolorbox}[wd=.33\paperwidth,ht=.045\paperheight,center]{date in head/foot}%
-    \vbox to.045\paperheight{\vfil\includegraphics[height=.035\paperheight]{figs/CDTLogo}\vfil}%
+    \vbox to.045\paperheight{\vfil\includegraphics[height=.035\paperheight]{figs/EPSRCLogo}\vfil}%
     \end{beamercolorbox}%
     
     \begin{beamercolorbox}[wd=.32\paperwidth,ht=.045\paperheight,center]{date in head/foot}%
@@ -141,7 +166,7 @@
 }
 
 
-%%% Spacing around equations %%%
+%%% Set spacing around equations %%%
 \expandafter\def\expandafter\normalsize\expandafter{%
     \normalsize
     \setlength\abovedisplayskip{-5pt}
@@ -151,6 +176,7 @@
 }
 
 
+%%% Set font sizes according to page size %%%
 \ifnum\pdfstrcmp{\posterSize}{a2}=0
 \setbeamerfont*{caption name}{size=\fontsize{24pt}{28pt}}
 \setbeamerfont*{caption}{size=\fontsize{24pt}{28pt}}
@@ -160,22 +186,20 @@
 \setbeamerfont*{date in head/foot}{size=\fontsize{28pt}{32pt}}
 
 \else \ifnum\pdfstrcmp{\posterSize}{a1}=0
-\setbeamerfont*{caption name}{size=\fontsize{24pt}{28pt}}
-\setbeamerfont*{caption}{size=\fontsize{24pt}{28pt}}
+\setbeamerfont*{caption name}{size=\fontsize{28pt}{32pt}}
+\setbeamerfont*{caption}{size=\fontsize{28pt}{32pt}}
 \setbeamerfont*{block body}{size=\fontsize{24pt}{28pt}}
 \setbeamerfont*{block title}{size=\fontsize{40pt}{44pt}}
 \setbeamerfont*{title in head/foot}{size=\fontsize{48pt}{52pt}}
 \setbeamerfont*{date in head/foot}{size=\fontsize{40pt}{44pt}}
 
-
 \else
-\setbeamerfont*{caption name}{size=\fontsize{24pt}{28pt}}
-\setbeamerfont*{caption}{size=\fontsize{24pt}{28pt}}
+\setbeamerfont*{caption name}{size=\fontsize{32pt}{36pt}}
+\setbeamerfont*{caption}{size=\fontsize{32pt}{36pt}}
 \setbeamerfont*{block body}{size=\fontsize{28pt}{32pt}}
 \setbeamerfont*{block title}{size=\fontsize{52pt}{56pt}}
 \setbeamerfont*{title in head/foot}{size=\fontsize{80pt}{84pt}}
 \setbeamerfont*{date in head/foot}{size=\fontsize{52pt}{56pt}}
-
 \fi\fi
 \end_preamble
 \use_default_options false
@@ -288,7 +312,7 @@ status open
 
 
 \backslash
-begin{formattedcolumn}
+begin{fcolumn}
 \end_layout
 
 \end_inset
@@ -296,17 +320,27 @@ begin{formattedcolumn}
 
 \end_layout
 
-\begin_deeper
-\begin_layout Block
-\begin_inset Argument 2
-status collapsed
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
 
 \begin_layout Plain Layout
-Background
+
+
+\backslash
+begin{fblock}{Background}
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Frame
 Background text goes here.
  Background text goes here.
  Background text goes here.
@@ -319,35 +353,21 @@ Background text goes here.
  Background text goes here.
 \end_layout
 
-\end_deeper
 \begin_layout Frame
 
 \end_layout
 
-\begin_deeper
-\begin_layout Block
-\begin_inset Argument 2
-status collapsed
-
-\begin_layout Plain Layout
-Formulation
-\end_layout
+\begin_layout Frame
+Here is an example citation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Example2017"
 
 \end_inset
 
-Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
- Formulation text goes here.
+.
 \end_layout
 
-\end_deeper
 \begin_layout Frame
 \begin_inset ERT
 status open
@@ -356,15 +376,11 @@ status open
 
 
 \backslash
-end{formattedcolumn}
+end{fblock}
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Frame
 
 \end_layout
 
@@ -380,7 +396,7 @@ status open
 
 
 \backslash
-begin{formattedcolumn}
+begin{fblock}{Formulation}
 \end_layout
 
 \end_inset
@@ -388,17 +404,119 @@ begin{formattedcolumn}
 
 \end_layout
 
-\begin_deeper
-\begin_layout Block
-\begin_inset Argument 2
-status collapsed
+\begin_layout Frame
+Rormulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+ Formulation text goes here.
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+The following is an important equation:
+\end_layout
+
+\begin_layout Frame
+\begin_inset Formula 
+\begin{equation}
+e^{i\pi}+1=0
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
 
 \begin_layout Plain Layout
-Results
+
+
+\backslash
+end{fblock}
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{fcolumn}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{fcolumn}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{fblock}{Results}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
 Results go here.
  Results go here.
  Results go here.
@@ -411,55 +529,6 @@ Results go here.
  Results go here.
 \end_layout
 
-\end_deeper
-\begin_layout Frame
-
-\end_layout
-
-\begin_deeper
-\begin_layout Block
-\begin_inset Argument 2
-status collapsed
-
-\begin_layout Plain Layout
-References
-\end_layout
-
-\end_inset
-
-References go here.
- References go here.
- References go here.
- References go here.
- References go here.
- References go here.
- References go here.
- References go here.
- References go here.
- References go here.
-\end_layout
-
-\end_deeper
-\begin_layout Frame
-
-\end_layout
-
-\begin_deeper
-\begin_layout Block
-\begin_inset Argument 2
-status collapsed
-
-\begin_layout Plain Layout
-Acknowledgements
-\end_layout
-
-\end_inset
-
-I acknowledge financial support from the EPSRC Centre for Doctoral Training
- in Computational Methods for Materials Science under grant EP/L015552/1.
-\end_layout
-
-\end_deeper
 \begin_layout Frame
 \begin_inset ERT
 status open
@@ -468,7 +537,124 @@ status open
 
 
 \backslash
-end{formattedcolumn}
+end{fblock}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{fblock}{References}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-
+\backslash
+topsep}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "refs"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{fblock}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{fblock}{Acknowledgements}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+I acknowledge financial support from the EPSRC Centre for Doctoral Training
+ in Computational Methods for Materials Science under grant EP/L015552/1.
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{fblock}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{fcolumn}
 \end_layout
 
 \end_inset
